@@ -3,7 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const methodOverride = require("method-override");
-const PORT = process.env.PORT; //PORT 3500
+const PORT = process.env.PORT; //PORT 5000
 
 // Middleware
 app.set("views", __dirname + "/views");
