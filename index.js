@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const methodOverride = require("method-override");
+
 const PORT = process.env.PORT; //PORT 5000
 
 // Middleware
@@ -20,7 +21,7 @@ app.use("/services", require("./controllers/services_ctr"));
 
 // Homepage route
 app.get("/", (req, res) => {
-  res.render("home");
+   res.render("home");
 });
 
 // Wildcard Error Page
@@ -28,7 +29,7 @@ app.get("*", (req, res) => {
   res.render("error404");
 });
 
-// Listens for connections. Confirgured for PORT 3500
+// Listens for connections. Confirgured for PORT 5000
 app.listen(PORT, () => {
   console.log("Up and running!");
 });
