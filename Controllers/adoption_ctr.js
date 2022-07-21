@@ -13,9 +13,9 @@ router.get('/', async (req, res) => {
 })
 
 //GET add pet adoption
-router.get ('/new', (req, res) => {
-    res.render('adoption/new_adoption')
-})
+// router.get ('/new', (req, res) => {
+//     res.render('adoption/new_adoption')
+// })
 
 //POST add pet adoption
 router.post('/', (req, res) => {

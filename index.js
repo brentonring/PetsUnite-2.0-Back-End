@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const methodOverride = require("method-override");
+const cors = require("cors");
 
 const PORT = process.env.PORT; //PORT 5000
 
@@ -13,6 +14,7 @@ app.engine("jsx", require("express-react-views").createEngine());
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
+app.use(cors());
 
 //routes to adoption, events and services controllers
 app.use("/adoption", require("./controllers/adoption_ctr"));
