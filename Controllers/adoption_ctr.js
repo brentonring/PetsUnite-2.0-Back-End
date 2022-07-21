@@ -3,15 +3,13 @@ const db = require('../models');
 
 //Controllers routes for Adoption
 //GET route pet adoption
-router.get('/', (req, res) => {
-  db.Adoption.find()
-    .then(pets => {
-      res.render('adoption/index_adoption', {pets});
-    })
-    .catch(err => {
-      console.log('err', err);
-      res.render('error404');
-    })
+router.get('/', async (req, res) => {
+  try {
+    const foundAdoptions = await  db.Adoption.find();
+    res.status(200).json(foundAdoptions);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 })
 
 //GET add pet adoption

@@ -3,15 +3,13 @@ const db = require('../models');
 
 //Controllers routes for Services
 //GET route services
-router.get('/', (req, res) => {
-    db.Service.find()
-      .then(services => {
-        res.render('services/index_services', {services});
-      })
-      .catch(err => {
-        console.log('err', err);
-        res.render('error404');
-      })
+router.get('/', async (req, res) => {
+  try {
+    const foundServices = await db.Service.find();
+    res.status(200).json(foundServices);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 })
 
 //GET add service
