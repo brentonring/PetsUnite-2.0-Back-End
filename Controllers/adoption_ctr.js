@@ -4,120 +4,99 @@ const db = require('../models');
 //Controllers routes for Adoption
 //GET route pet adoption
 router.get('/', async (req, res) => {
-  try {
-    const foundAdoptions = await  db.Adoption.find();
-    res.status(200).json(foundAdoptions);
-  } catch (err) {
+  const findAdoption = await db.Adoption.find()
+  try{
+    res.status(200).json(findAdoption)
+  }
+  catch(err){
+    console.log('err', err);
     res.status(500).json(err);
   }
 })
 
-//GET add pet adoption
-// router.get ('/new', (req, res) => {
-//     res.render('adoption/new_adoption')
-// })
-
-//POST add pet adoption
-router.post('/', (req, res) => {
-  db.Adoption.create(req.body)
-    .then(() => {
-      res.redirect('/adoption');
-    })
-    .catch(err => {
-      if(err && err.name === 'ValidationError'){
+//POST add new pet adoption
+router.post('/new', async (req, res) => {
+  let newAdoption = await db.Adoption.create(req.body)
+  try{
+    res.status(200).json(newAdoption)
+  }
+  catch(err){
+    if(err && err.name === 'ValidationError'){
         let message = "Validation Error: "
         for(var field in err.errors){
           message+= `${field} was ${err.errors[field].value}.`
           message+= `${err.errors[field].message}`
         }
         console.log('Validation error message', message)
-        res.render('adoption/new_adoption', {message})
+        res.status(500).json({message})
       }
       else{
-        res.render('error404');
+        res.status(500).json(err);
       }
-    })
+  }
 })
 
-//GET show pet adoption
-router.get('/:id', (req, res) => {    
-    db.Adoption.findById(req.params.id)
-    .populate('comments')
-    .then(pets => {
-      res.render('adoption/show_adoption', {pets});
-    })
-    .catch(err => {
-      res.render('error404');
-    })
+//GET show one pet adoption
+router.get('/:id', async (req, res) => {    
+    let foundOneAdoption = await db.Adoption.findById(req.params.id)
+    try{
+        res.status(200).json(foundOneAdoption)
+        // .populate('comments')
+        // .then(pets => {
+        //   res.render('adoption/show_adoption', {pets});
+        // })
+    }
+    catch(err){
+        res.status(500).json(err)
+    }
 })
 
-//GET edit pet adoption
-router.get('/:id/edit', (req, res) => {
-  db.Adoption.findById(req.params.id)
-    .then(foundPet => {
-      res.render('adoption/edit_adoption', {
-        pet: foundPet
-      })
-    })
-    .catch(err => {
-      res.render('error404')
-    })
-})
+//PUT edit one pet adoption
+router.put('/:id/edit', async (req, res) => {
+  let editOneAdoption = await db.Adoption.findByIdAndUpdate(req.params.id, req.body, { runValidators: true })
+  try{
+    res.status(200).json(editOneAdoption)
+  }
+  catch(err){
+    res.status(500).json(err)
+  }
+});
 
-//PUT edit pet adoption
-router.put('/:id', (req, res) =>{
-  db.Adoption.findByIdAndUpdate(req.params.id, req.body, {runValidators: true})
-    .then(() => {
-      res.redirect(`/adoption/${req.params.id}`);
-    })
-    .catch(err => {
-      res.render('error404');
-    })
-})
 
 //Post comment to pet adoption
-router.post('/:id/comment', (req, res) => {
-  console.log('post comment', req.body)
+router.post('/:id/comment', async (req, res) => {
   if (req.body.author === '') { req.body.author = undefined }
     req.body.adopt = req.body.adopt ? true : false
-    db.Adoption.findById(req.params.id)
-        .then(pets => {
-            db.AdoptComment.create(req.body)
-                .then(comment => {
-                    pets.comments.push(comment.id)
-                    pets.save()
-                        .then(() => {
-                            res.redirect(`/adoption/${req.params.id}`)
-                        })
-                        .catch(err => {
-                            res.render('error404')
-                        })
-                })
-                .catch(err => {
-                    res.render('error404')
-                })
-        })
-        .catch(err => {
-            res.render('error404')
-        })
+    try{
+        let addAdoptionComment = await db.AdoptComment.create(req.body)
+        res.status(200).json(addAdoptionComment)
+    }
+    catch(err){
+        res.status(500).json(err)
+    }
 });
 
 //DELETE pet adoption
 router.delete('/:id', async (req, res) => {
   let deletedAdoption = await db.Adoption.findByIdAndDelete(req.params.id)
-  res.status(303).redirect('/adoption')
+  try{
+    res.status(303).json(deletedAdoption)
+  }
+  catch(err){
+    res.status(500).json(err)
+  }
 });
 
 //DELETE comment from pet adoption
-router.delete('/:id/comment/:commentId', (req, res) => {
-  db.AdoptComment.findByIdAndDelete(req.params.commentId)
-        .then(() => {
-            console.log('Success')
-            res.redirect(`/adoption/${req.params.id}`)
-        })
-        .catch(err => {
-            res.render('error404')
-        })
+router.delete('/:id/comment/:commentId', async (req, res) => {
+  let deletedAdoptionComment = await db.AdoptComment.findByIdAndDelete(req.params.commentId)
+  try{
+    console.log('Success')
+    res.status(303).json(deletedAdoptionComment)
+  }
+  catch(err){
+    res.status(500).json(err)
+  }
 })
 
 module.exports = router;
