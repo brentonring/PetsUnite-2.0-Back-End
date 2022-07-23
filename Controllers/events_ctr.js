@@ -2,21 +2,22 @@ const router = require("express").Router();
 const db = require("../models");
 
 //Controllers routes for Events
-//GET route events
+//GET route events - INDEX page
 router.get("/", async (req, res) => {
-  try {
-    const foundEvents = await db.Event.find();
+  const foundEvents = await db.Event.find();
+  try {    
     res.status(200).json(foundEvents);
+    console.log(foundEvents)
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-//POST add events
+//POST add new events
 router.post("/", async (req, res) => {
-  try {
-    const foundEvent = await db.Event.create(req.body);
-    res.json(foundEvent);
+  const newEvent = await db.Event.create(req.body);
+  try {    
+    res.json(newEvent);
   } catch (err) {
     if (err && err.name === "ValidationError") {
       let message = "Validation Error: ";
@@ -35,13 +36,9 @@ router.post("/", async (req, res) => {
 //GET show events
 router.get("/:id", async (req, res) => {
   try {
-    const foundEvent = await db.Event.findById(req.params.id);
-    res.status(200).json(foundEvent);
-    // .populate("comments")
-    // .then((events) => {
-    //   console.log(events.comments);
-    //   res.render("events/show_events", { events });
-    // })
+    const foundEvent = await db.Event.findById(req.params.id)
+    .populate('comments')
+    res.status(200).json(foundEvent);    
   } catch (err) {
     console.log("error", err);
     res.status(500).json(err);
@@ -58,37 +55,21 @@ router.put("/:id", async (req, res) => {
     );
   } catch (err) {
     res.status(500).json(err);
+    console.log(err);
   }
 });
 
-//POST comment to events
-// router.post("/:id/comment", (req, res) => {
-//   console.log("post comment", req.body);
-//   if (req.body.author === "") {
-//     req.body.author = undefined;
-//   }
-//   req.body.event = req.body.event ? true : false;
-//   db.Event.findById(req.params.id)
-//     .then((events) => {
-//       db.EventComment.create(req.body)
-//         .then((comment) => {
-//           events.comments.push(comment.id);
-//           events
-//             .save()
-//             .then(() => {
-//               res.redirect(`/events/${req.params.id}`);
-//             })
-//             .catch((err) => {
-//               res.render("error404");
-//             });
-//         })
-//         .catch((err) => {
-//           res.render("error404");
-//         });
-//     })
-//     .catch((err) => {
-//       res.render("error404");
-//     });
+////Post comment to events
+// router.post('/:id/comment', async (req, res) => {
+//   if (req.body.author === '') { req.body.author = undefined }
+//     req.body.event = req.body.event ? true : false
+//     try{
+//         let addEventComment = await db.EventComment.create(req.body)
+//         res.status(200).json(addEventComment)
+//     }
+//     catch(err){
+//         res.status(500).json(err)
+//     }
 // });
 
 //DELETE events

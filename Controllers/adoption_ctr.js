@@ -15,39 +15,35 @@ router.get('/', async (req, res) => {
 })
 
 //POST add new pet adoption
-router.post('/new', async (req, res) => {
-  let newAdoption = await db.Adoption.create(req.body)
-  try{
-    res.status(200).json(newAdoption)
-  }
-  catch(err){
-    if(err && err.name === 'ValidationError'){
-        let message = "Validation Error: "
-        for(var field in err.errors){
-          message+= `${field} was ${err.errors[field].value}.`
-          message+= `${err.errors[field].message}`
-        }
-        console.log('Validation error message', message)
-        res.status(500).json({message})
-      }
-      else{
-        res.status(500).json(err);
-      }
-  }
-})
+// router.post('/new', async (req, res) => {
+//   let newAdoption = await db.Adoption.create(req.body)
+//   try{
+//     res.status(200).json(newAdoption)
+//   }
+//   catch(err){
+//     if(err && err.name === 'ValidationError'){
+//         let message = "Validation Error: "
+//         for(var field in err.errors){
+//           message+= `${field} was ${err.errors[field].value}.`
+//           message+= `${err.errors[field].message}`
+//         }
+//         console.log('Validation error message', message)
+//         res.status(500).json({message})
+//       }
+//       else{
+//         res.status(500).json(err);
+//       }
+//   }
+// })
 
 //GET show one pet adoption
-router.get('/:id', async (req, res) => {    
-    let foundOneAdoption = await db.Adoption.findById(req.params.id)
+router.get('/:id', async (req, res) => {        
     try{
-        res.status(200).json(foundOneAdoption)
-        // .populate('comments')
-        // .then(pets => {
-        //   res.render('adoption/show_adoption', {pets});
-        // })
-    }
-    catch(err){
-        res.status(500).json(err)
+    let foundOneAdoption = await db.Adoption.findById(req.params.id)
+      .populate('comments')
+      res.status(200).json(foundOneAdoption)       
+    } catch(err){
+      res.status(500).json(err)
     }
 })
 
