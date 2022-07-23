@@ -5,7 +5,7 @@ async function seedServiceComment() {
         let service = await db.Service.findOne({ service: 'feeding' })
     
         // fake sample comment
-        let comment = await db.Servicecomment.create({
+        let comment = await db.ServiceComment.create({
             author: 'Lazy Daisy',
             event: false,
             content: "Count me in!"
