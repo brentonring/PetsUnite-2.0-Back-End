@@ -5,7 +5,7 @@ async function seedAdoptComment() {
         let pet = await db.Adoption.findOne({ name: 'Lucille' })
     
         // fake sample comment
-        let comment = await db.Comment.create({
+        let comment = await db.AdoptComment.create({
             author: 'Chatty Patty',
             adopt: false,
             content: "Wow, what a beautiful dog! We are interested in adopting!"

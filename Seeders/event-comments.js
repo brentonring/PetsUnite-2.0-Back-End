@@ -2,10 +2,10 @@ const db = require('../models');
 
 async function seedEventComment() {
     try {
-        let event = await db.Event.findOne({ event_name: 'Doggie Play Date' })
+        let event = await db.Event.findOne({ event_name: 'Fun Doggie Play Date' })
     
         // fake sample comment
-        let comment = await db.Eventcomment.create({
+        let comment = await db.EventComment.create({
             author: 'Chatty Patty',
             event: false,
             content: "Count me in!"
