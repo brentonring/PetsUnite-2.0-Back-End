@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 //adoption pets
 const adoptionSchema = new mongoose.Schema({
-    animal_type: { type: String, required: true},
+    animal_type: String,
     breed: String,
     color: String,
     gender: String,
