@@ -40,11 +40,17 @@ router.post('/', async (req, res) => {
 //GET show one pet adoption
 router.get('/:id', async (req, res) => {    
     let foundOneAdoption = await db.Adoption.findById(req.params.id)
-    let allComments = await db.AdoptComment.populate('comments')
+    foundOneAdoption.populate('comments')
+    // console.log(foundOneAdoption)
+    //   var adoptComments = [];
+    //   foundOneAdoption.comments.forEach(comment => {
+    //     adoptComments.push(db.AdoptComment.findById(comment))
+    //   });
+    // console.log(adoptComments)
     try{
         res.status(200).json(foundOneAdoption)
         // let allComments = .populate('comments')
-        res.status(200).json({allComments})
+        // res.status(200).json(foundOneAdoption.populate('comments'))
     }
     catch(err){
         res.status(500).json(err)
