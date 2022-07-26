@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 //services schema
 const serviceSchema = new mongoose.Schema({
-    service: { type: String, required: true},
+    service: String,
     animal_type: String,
     breed: String,
     gender: String,
