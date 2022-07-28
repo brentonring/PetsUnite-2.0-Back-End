@@ -2,6 +2,7 @@
     "name": "petsunite-2.0-back-end",
     "description": "",
     "version": "1.0.0",
+    "private": true,
     "engines": {
         "node": "16.13.1"
     },

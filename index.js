@@ -5,12 +5,13 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 const methodOverride = require("method-override");
-const path = require("path");
+// const path = require("path");
 
 const PORT = process.env.PORT; //PORT 5000
 
 // Middleware
 app.use(cors());
+app.use(express.json());
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
