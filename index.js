@@ -6,6 +6,7 @@ const cors = require("cors");
 const app = express();
 const methodOverride = require("method-override");
 const path = require("path");
+//install bcrypt for hashing passwords
 
 const PORT = process.env.PORT; //PORT 5000
 

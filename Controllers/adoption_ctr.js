@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const db = require('../models');
 
+
 //Controllers routes for Adoption
 //GET route pet adoption
 router.get('/', async (req, res) => {
@@ -40,7 +41,7 @@ router.post('/', async (req, res) => {
 //GET show one pet adoption
 router.get('/:id', async (req, res) => {    
     let foundOneAdoption = await db.Adoption.findById(req.params.id)
-    // foundOneAdoption.populate('comments')
+    .populate('comments')
     // console.log(foundOneAdoption)
     //   var adoptComments = [];
     //   foundOneAdoption.comments.forEach(comment => {
