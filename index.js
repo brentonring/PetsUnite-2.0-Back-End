@@ -26,7 +26,12 @@ app.use("/adoption", require("./controllers/adoption_ctr"));
 app.use("/events", require("./controllers/events_ctr"));
 app.use("/services", require("./controllers/services_ctr"));
 
+// Default
+app.get('/', (req, res) => {
+  res.json('Hello to my app')
+})
+
 // Listens for connections. Confirgured for PORT 5000
-app.listen(PORT, () => {
+app.listen(PORT || 3500, () => {
   console.log("Up and running!");
 });
