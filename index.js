@@ -34,5 +34,5 @@ app.get('/', (req, res) => {
 
 // Listens for connections. Confirgured for PORT 5000
 app.listen(PORT || 3500, () => {
-  console.log("Up and running!");
+  console.log("Up and running!" + ' On port: '+ PORT);
 });
